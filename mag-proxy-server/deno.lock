@@ -1,5 +1,15 @@
 {
   "version": "3",
+  "packages": {
+    "specifiers": {
+      "jsr:@std/dotenv": "jsr:@std/dotenv@0.225.0"
+    },
+    "jsr": {
+      "@std/dotenv@0.225.0": {
+        "integrity": "44db32932c67df82790a3e6847d7007befb6cc22d71f2f3ee7b7d00e1f0d6c94"
+      }
+    }
+  },
   "redirects": {
     "https://deno.land/x/deno_dom/deno-dom-wasm.ts": "https://deno.land/x/deno_dom@v0.1.48/deno-dom-wasm.ts"
   },
@@ -38,6 +48,9 @@
     "https://deno.land/std@0.152.0/testing/_diff.ts": "029a00560b0d534bc0046f1bce4bd36b3b41ada3f2a3178c85686eb2ff5f1413",
     "https://deno.land/std@0.152.0/testing/_format.ts": "0d8dc79eab15b67cdc532826213bbe05bccfd276ca473a50a3fc7bbfb7260642",
     "https://deno.land/std@0.152.0/testing/asserts.ts": "093735c88f52bbead7f60a1f7a97a2ce4df3c2d5fab00a46956f20b4a5793ccd",
+    "https://deno.land/std@0.190.0/collections/filter_values.ts": "5b9feaf17b9a6e5ffccdd36cf6f38fa4ffa94cff2602d381c2ad0c2a97929652",
+    "https://deno.land/std@0.190.0/collections/without_all.ts": "a89f5da0b5830defed4f59666e188df411d8fece35a5f6ca69be6ca71a95c185",
+    "https://deno.land/std@0.190.0/dotenv/mod.ts": "f5a8123741d1561ae8184a7f043bc097b15132c5171c651142b804b6dbc21853",
     "https://deno.land/std@0.97.0/_util/assert.ts": "2f868145a042a11d5ad0a3c748dcf580add8a0dbc0e876eaa0026303a5488f58",
     "https://deno.land/std@0.97.0/_util/os.ts": "e282950a0eaa96760c0cf11e7463e66babd15ec9157d4c9ed49cc0925686f6a7",
     "https://deno.land/std@0.97.0/encoding/base64.ts": "eecae390f1f1d1cae6f6c6d732ede5276bf4b9cd29b1d281678c054dc5cc009e",
