@@ -1,3 +1,5 @@
+import "jsr:@std/dotenv/load";
+
 export const API_KEY = Deno.env.get("JINA_API_KEY") 
 export const API_URL = Deno.env.get("JINA_API_URL")
 export const CACHE_KEY = new URL(API_URL);
