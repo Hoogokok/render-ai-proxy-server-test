@@ -5,6 +5,7 @@ import { PORT } from "./config.ts";
 import { createRateLimitMiddleware } from "./middleware.ts";
 import { scrapeFangoriaArticles } from "./scraper.ts";
 import { Article } from "./type.ts";
+import { FetchError, CacheError } from "./error.ts";
 const app = new Application();
 const router = new Router();
 
@@ -26,7 +27,7 @@ async function handleGetArticles(ctx: Context): Promise<void> {
   const forceRefresh = ctx.request.url.searchParams.get('refresh') === 'true';
   
   try {
-    let articles: Article[];
+    let articles: Article[]; 
     if (!forceRefresh) {
       const cachedArticles = await getCachedArticles();
       if (cachedArticles) {
@@ -41,9 +42,20 @@ async function handleGetArticles(ctx: Context): Promise<void> {
     await cacheArticles(articles);
     ctx.response.body = articles;
   } catch (error) {
+    if (error instanceof FetchError) {
+      ctx.response.status = error.status;
+      ctx.response.body = { error: error.message };
+    } else if (error instanceof CacheError) {
+      console.error('Cache error:', error);
+      // 캐시 에러 시 새로운 데이터를 가져오도록 시도
+      const articles = await fetchFantoriaArticles(); // 'articles' 변수를 선언하고 초기화합니다
+      await cacheArticles(articles);
+      ctx.response.body = articles;
+    } else {
+      ctx.response.status = 500;
+      ctx.response.body = { error: 'Internal server error' };
+    }
     console.error('Error in handleGetArticles:', error);
-    ctx.response.status = 500;
-    ctx.response.body = { error: 'Failed to fetch articles', details: error.message };
   }
 }
 
