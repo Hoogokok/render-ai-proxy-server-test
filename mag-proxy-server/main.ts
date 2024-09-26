@@ -1,33 +1,22 @@
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import { Application, Context, Router } from "https://deno.land/x/oak@v11.1.0/mod.ts";
 import { cacheArticles, getCachedArticles } from "./cache.ts";
-import { API_KEY, API_URL, PORT } from "./config.ts";
+import { PORT } from "./config.ts";
 import { createRateLimitMiddleware } from "./middleware.ts";
-import { parseArticlesFromMarkdown } from "./parser.ts";
+import { scrapeFangoriaArticles } from "./scraper.ts";
 import { Article } from "./type.ts";
 const app = new Application();
 const router = new Router();
 
 async function fetchFantoriaArticles(): Promise<Article[]> {
-  console.log("Fetching Fangoria articles...");
-  const headers = {
-    "X-Return-Format": "markdown",
-    'Authorization': `Bearer ${API_KEY}`,
-  };
+  console.log("Fangoria 기사 가져오는 중...");
 
   try {
-    const response = await fetch(API_URL, { headers });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const markdown = await response.text();
-    const articles = parseArticlesFromMarkdown(markdown);
-    console.log(`Parsed ${articles.length} articles`);
+    const articles = await scrapeFangoriaArticles();
+    console.log(`${articles.length}개의 기사 파싱 완료`);
     return articles;
   } catch (error) {
-    console.error('Error fetching Fangoria articles:', error);
+    console.error('Fangoria 기사 가져오기 오류:', error);
     throw error;
   }
 }
