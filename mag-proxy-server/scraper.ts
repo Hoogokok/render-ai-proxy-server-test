@@ -1,8 +1,9 @@
 import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
 import { Article } from "./type.ts";
+import logger from "./logger.ts";
 
 export async function scrapeFangoriaArticles(): Promise<Article[]> {
-  console.log("Fangoria 기사 스크래핑 중...");
+  logger.info("Fangoria 기사 스크래핑 중...");
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -49,6 +50,9 @@ export async function scrapeFangoriaArticles(): Promise<Article[]> {
     });
 
     return articles.filter(isValidArticle);
+  } catch (error) {
+    logger.error("스크래핑 중 오류 발생:", error);
+    throw error;
   } finally {
     await browser.close();
   }
