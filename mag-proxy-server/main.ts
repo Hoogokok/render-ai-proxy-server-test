@@ -1,7 +1,7 @@
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import { Application, Context, Router } from "https://deno.land/x/oak@v11.1.0/mod.ts";
 import { cacheArticles, getCachedArticles } from "./cache.ts";
-import { API_KEY, API_URL, PORT } from "./config.ts";
+import { API_KEY, API_URL, PORT, SCRAPED_URL } from "./config.ts";
 import { createRateLimitMiddleware } from "./middleware.ts";
 import { parseArticlesFromMarkdown } from "./parser.ts";
 import { Article } from "./type.ts";
@@ -16,7 +16,7 @@ async function fetchFantoriaArticles(): Promise<Article[]> {
   };
 
   try {
-    const response = await fetch(API_URL, { headers });
+    const response = await fetch(SCRAPED_URL, { headers });
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -58,8 +58,7 @@ async function handleGetArticles(ctx: Context): Promise<void> {
   }
 }
 
-
-router.get('/api/fangoria-articles', handleGetArticles);
+router.get('/fangoria-articles', handleGetArticles);
 
 app.use(oakCors());
 app.use(createRateLimitMiddleware(100, 15 * 60 * 1000));
